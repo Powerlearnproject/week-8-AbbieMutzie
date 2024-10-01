@@ -1,0 +1,22 @@
+-- Combined Query: Renewable vs Non-Renewable Energy Usage and High Consumption Communities
+
+SELECT 
+    es.EnergyType AS EnergyType,
+    SUM(eu.EnergyConsumed) AS TotalEnergyConsumed,
+    c.Name AS CommunityName,
+    CASE 
+        WHEN SUM(eu.EnergyConsumed) > 100 THEN 'High Consumption'
+        ELSE 'Low Consumption'
+    END AS ConsumptionLevel
+FROM 
+    EnergySources es
+JOIN 
+    Communities c ON es.CommunityID = c.CommunityID
+JOIN 
+    EnergyUsage eu ON c.CommunityID = eu.CommunityID
+GROUP BY 
+    es.EnergyType, c.Name
+HAVING 
+    SUM(eu.EnergyConsumed) > 100 OR SUM(eu.EnergyConsumed) <= 100
+ORDER BY 
+    es.EnergyType, c.Name;
