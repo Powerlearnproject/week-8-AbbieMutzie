@@ -1,0 +1,23 @@
+-- Combined Query: Energy Sources, Communities Without Renewable Energy, and Energy Usage Trends
+
+SELECT 
+    c.Name AS CommunityName,
+    es.EnergyType AS EnergyType,
+    es.Capacity AS Capacity,
+    CASE 
+        WHEN es.EnergyType = 'Non-Renewable' THEN 'No Renewable Energy'
+        ELSE 'Has Renewable Energy'
+    END AS RenewableStatus,
+    eu.Month AS UsageMonth,
+    eu.Year AS UsageYear,
+    SUM(eu.EnergyConsumed) AS TotalConsumption
+FROM 
+    Communities c
+LEFT JOIN 
+    EnergySources es ON c.CommunityID = es.CommunityID
+LEFT JOIN 
+    EnergyUsage eu ON c.CommunityID = eu.CommunityID
+GROUP BY 
+    c.Name, es.EnergyType, es.Capacity, eu.Month, eu.Year
+ORDER BY 
+    c.Name, eu.Year, eu.Month;
