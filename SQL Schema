@@ -1,0 +1,38 @@
+-- Create Communities Table
+CREATE TABLE Communities (
+    CommunityID INT PRIMARY KEY,
+    Name VARCHAR(255),
+    Location VARCHAR(255),
+    Population INT,
+    IncomeLevel VARCHAR(50)
+);
+
+-- Create Energy Sources Table
+CREATE TABLE EnergySources (
+    SourceID INT PRIMARY KEY,
+    CommunityID INT,
+    EnergyType VARCHAR(50),
+    Capacity INT,
+    FOREIGN KEY (CommunityID) REFERENCES Communities(CommunityID)
+);
+
+-- Create Energy Usage Table
+CREATE TABLE EnergyUsage (
+    UsageID INT PRIMARY KEY,
+    CommunityID INT,
+    EnergyConsumed DECIMAL(10, 2),
+    Month INT,
+    Year INT,
+    FOREIGN KEY (CommunityID) REFERENCES Communities(CommunityID)
+);
+
+-- Create Energy Infrastructure Projects Table
+CREATE TABLE EnergyInfrastructureProjects (
+    ProjectID INT PRIMARY KEY,
+    CommunityID INT,
+    ProjectName VARCHAR(255),
+    EnergyType VARCHAR(50),
+    StartDate DATE,
+    CompletionDate DATE,
+    FOREIGN KEY (CommunityID) REFERENCES Communities(CommunityID)
+);
